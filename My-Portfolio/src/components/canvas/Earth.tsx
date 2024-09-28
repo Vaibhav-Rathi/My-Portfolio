@@ -12,6 +12,7 @@ const Earth = () => {
   );
 };
 
+
 const EarthCanvas = () => {
   return (
     <Canvas

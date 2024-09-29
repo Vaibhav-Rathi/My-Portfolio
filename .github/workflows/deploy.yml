@@ -43,7 +43,7 @@ jobs:
         run: docker pull vaibhavvaibhav6/my-portfolio:latest
 
       - name: Deploy to EC2  # Corrected indentation here
-        uses: appleboy/ssh-action@main
+        uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}

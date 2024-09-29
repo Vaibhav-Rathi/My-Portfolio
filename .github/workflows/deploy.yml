@@ -32,8 +32,8 @@ jobs:
       - name: Build and Push Docker image
         uses: docker/build-push-action@v3
         with:
-          context: ./My-Portfolio  # Updated context
-          file: ./My-Portfolio/Dockerfile  # Updated file path
+          context: ./My-Portfolio  
+          file: ./My-Portfolio/Dockerfile  
           push: true
           tags: |
             vaibhavvaibhav6/my-portfolio:latest
@@ -42,13 +42,14 @@ jobs:
       - name: Verify Pushed Image
         run: docker pull vaibhavvaibhav6/my-portfolio:latest
 
-      - name: Deploy to EC2  # Corrected indentation here
+      - name: Deploy to EC2  
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             sudo docker pull vaibhavvaibhav6/my-portfolio:latest
             sudo docker stop web-app || true
             sudo docker rm web-app || true

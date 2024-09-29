@@ -52,7 +52,7 @@ const Contact: React.FC = () => {
         import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID,
         {
           from_name: form.name,
-          to_name: "JavaScript Mastery",
+          to_name: "Vaibhav Rathi",
           from_email: form.email,
           to_email: "vaibhavrathi88888@gmail.com",
           message: form.message,

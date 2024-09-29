@@ -33,7 +33,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./Dockerfile
+          file: ./Dockerfile  # Make sure the Dockerfile is in the root of your repo
           push: true
           tags: |
             vaibhavvaibhav6/my-portfolio:latest

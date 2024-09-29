@@ -45,6 +45,7 @@ const Contact: React.FC = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+    
 
     emailjs
       .send(

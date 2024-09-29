@@ -32,8 +32,8 @@ jobs:
       - name: Build and Push Docker image
         uses: docker/build-push-action@v3
         with:
-          context: .
-          file: ./Dockerfile  # Make sure the Dockerfile is in the root of your repo
+          context: ./My-Portfolio  # Updated context
+          file: ./My-Portfolio/Dockerfile  # Updated file path
           push: true
           tags: |
             vaibhavvaibhav6/my-portfolio:latest

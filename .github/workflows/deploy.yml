@@ -39,9 +39,9 @@ jobs:
             vaibhavvaibhav6/my-portfolio:latest
             vaibhavvaibhav6/my-portfolio:${{ github.sha }}
           build-args: |
-            VITE_APP_EMAILJS_SERVICE_ID=${{ secrets.EMAILJS_SERVICE_ID }}
-            VITE_APP_EMAILJS_TEMPLATE_ID=${{ secrets.EMAILJS_TEMPLATE_ID }}
-            VITE_APP_EMAILJS_PUBLIC_KEY=${{ secrets.EMAILJS_PUBLIC_KEY }}
+            VITE_APP_EMAILJS_SERVICE_ID=${{ secrets.VITE_APP_EMAILJS_SERVICE_ID }}
+            VITE_APP_EMAILJS_TEMPLATE_ID=${{ secrets.VITE_APP_EMAILJS_TEMPLATE_ID }}
+            VITE_APP_EMAILJS_PUBLIC_KEY=${{ secrets.VITE_APP_EMAILJS_PUBLIC_KEY }}
 
       - name: Verify Pushed Image
         run: docker pull vaibhavvaibhav6/my-portfolio:latest

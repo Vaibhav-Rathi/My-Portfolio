@@ -5,7 +5,7 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Step 3: Copy package.json and package-lock.json (if it exists)
-COPY package*.json ./
+COPY package*.json ./ 
 
 # Step 4: Install dependencies
 RUN npm install
@@ -25,11 +25,20 @@ WORKDIR /app
 # Step 9: Copy the build artifacts from the builder stage
 COPY --from=builder /app/dist ./dist
 
-# Step 10: Expose the port the Vite app will run on
+# Step 10: Set environment variables
+ARG VITE_APP_EMAILJS_SERVICE_ID
+ARG VITE_APP_EMAILJS_TEMPLATE_ID
+ARG VITE_APP_EMAILJS_PUBLIC_KEY
+
+ENV VITE_APP_EMAILJS_SERVICE_ID=${VITE_APP_EMAILJS_SERVICE_ID}
+ENV VITE_APP_EMAILJS_TEMPLATE_ID=${VITE_APP_EMAILJS_TEMPLATE_ID}
+ENV VITE_APP_EMAILJS_PUBLIC_KEY=${VITE_APP_EMAILJS_PUBLIC_KEY}
+
+# Step 11: Expose the port the Vite app will run on
 EXPOSE 5173
 
-# Step 11: Start the Vite app using serve (install serve globally)
+# Step 12: Start the Vite app using serve (install serve globally)
 RUN npm install -g serve
 
-# Step 12: Command to run the app
+# Step 13: Command to run the app
 CMD ["serve", "-s", "dist"]

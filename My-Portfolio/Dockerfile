@@ -13,19 +13,7 @@ RUN npm install
 # Step 5: Copy the rest of the application files to the container
 COPY . .
 
-# Step 6: Build the Vite app for production
-RUN npm run build
-
-# Step 7: Use a smaller image for running the production build
-FROM node:20-alpine AS runner
-
-# Step 8: Set the working directory in the second stage
-WORKDIR /app
-
-# Step 9: Copy the build artifacts from the builder stage
-COPY --from=builder /app/dist ./dist
-
-# Step 10: Set environment variables
+# Step 6: Set environment variables
 ARG VITE_APP_EMAILJS_SERVICE_ID
 ARG VITE_APP_EMAILJS_TEMPLATE_ID
 ARG VITE_APP_EMAILJS_PUBLIC_KEY
@@ -33,6 +21,18 @@ ARG VITE_APP_EMAILJS_PUBLIC_KEY
 ENV VITE_APP_EMAILJS_SERVICE_ID=${VITE_APP_EMAILJS_SERVICE_ID}
 ENV VITE_APP_EMAILJS_TEMPLATE_ID=${VITE_APP_EMAILJS_TEMPLATE_ID}
 ENV VITE_APP_EMAILJS_PUBLIC_KEY=${VITE_APP_EMAILJS_PUBLIC_KEY}
+
+# Step 7: Build the Vite app for production
+RUN npm run build
+
+# Step 8: Use a smaller image for running the production build
+FROM node:20-alpine AS runner
+
+# Step 9: Set the working directory in the second stage
+WORKDIR /app
+
+# Step 10: Copy the build artifacts from the builder stage
+COPY --from=builder /app/dist ./dist
 
 # Step 11: Expose the port the Vite app will run on
 EXPOSE 5173

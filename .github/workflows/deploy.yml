@@ -38,6 +38,10 @@ jobs:
           tags: |
             vaibhavvaibhav6/my-portfolio:latest
             vaibhavvaibhav6/my-portfolio:${{ github.sha }}
+          build-args: |
+            VITE_APP_EMAILJS_SERVICE_ID=${{ secrets.EMAILJS_SERVICE_ID }}
+            VITE_APP_EMAILJS_TEMPLATE_ID=${{ secrets.EMAILJS_TEMPLATE_ID }}
+            VITE_APP_EMAILJS_PUBLIC_KEY=${{ secrets.EMAILJS_PUBLIC_KEY }}
 
       - name: Verify Pushed Image
         run: docker pull vaibhavvaibhav6/my-portfolio:latest
@@ -53,4 +57,8 @@ jobs:
             sudo docker pull vaibhavvaibhav6/my-portfolio:latest
             sudo docker stop web-app || true
             sudo docker rm web-app || true
-            sudo docker run -d --name web-app -p 3005:3000 vaibhavvaibhav6/my-portfolio:latest
+            sudo docker run -d --name web-app -p 3005:3000 \
+              -e VITE_APP_EMAILJS_SERVICE_ID=${{ secrets.EMAILJS_SERVICE_ID }} \
+              -e VITE_APP_EMAILJS_TEMPLATE_ID=${{ secrets.EMAILJS_TEMPLATE_ID }} \
+              -e VITE_APP_EMAILJS_PUBLIC_KEY=${{ secrets.EMAILJS_PUBLIC_KEY }} \
+              vaibhavvaibhav6/my-portfolio:latest

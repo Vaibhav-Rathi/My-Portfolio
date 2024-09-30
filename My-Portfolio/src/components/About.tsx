@@ -53,7 +53,7 @@ const About: React.FC = () => {
     <>
       <motion.div variants={textVariant(2)}>
         <p className={styles.sectionSubText}>Introduction</p>
-        <h2 className={styles.sectionHeadText}>Overview.</h2>
+        <h2 className={styles.sectionHeadText}>Overview</h2>
       </motion.div>
 
       <motion.p

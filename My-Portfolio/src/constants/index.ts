@@ -195,12 +195,12 @@ import {
       image: "https://randomuser.me/api/portraits/women/6.jpg",
     },
   ];
-  
+
   const projects = [
     {
       name: "Imaginify",
       description:
-        "Imaginify is an AI-based tool that restores and edits images, enhancing quality and detail effortlessly.",
+        "Imaginify is an AI-powered image restoration and editing tool that enhances photo quality, repairs damage, and improves visual details seamlessly.",
       tags: [
         {
           name: "Next JS",
@@ -221,6 +221,7 @@ import {
       ],
       image: carrent,
       source_code_link: "https://github.com/Vaibhav-Rathi/Imaginify",
+      live_demo_link: "https://imaginify.vaibhav-projects.com/",
     },
     {
       name: "Job IT",
@@ -242,6 +243,7 @@ import {
       ],
       image: jobit,
       source_code_link: "https://github.com/Vaibhav-Rathi/",
+      live_demo_link: "https://github.com/Vaibhav-Rathi/",
     },
     {
       name: "Trip Guide",
@@ -253,17 +255,20 @@ import {
           color: "blue-text-gradient",
         },
         {
-          name: "supabase",
+          name: "nodejs",
           color: "green-text-gradient",
         },
         {
-          name: "css",
+          name: "scss",
           color: "pink-text-gradient",
         },
       ],
       image: tripguide,
       source_code_link: "https://github.com/Vaibhav-Rathi/",
+      live_demo_link: "https://github.com/Vaibhav-Rathi/"
     },
   ];
+  
+
   
   export { services, technologies, experiences, testimonials, projects };

@@ -22,6 +22,7 @@ interface Project {
   tags: Tag[];
   image: string;
   source_code_link: string;
+  live_demo_link?: string; // Add live demo link field
 }
 
 // ProjectCard component with type definition for props
@@ -32,9 +33,14 @@ const ProjectCard: React.FC<Project> = ({
   tags,
   image,
   source_code_link,
+  live_demo_link, // Use live demo link
 }) => {
   return (
-    <motion.div variants={fadeIn("up", "spring", index * 0.5, 0.75)}>
+    <motion.div
+      variants={fadeIn("up", "spring", index * 0.5, 0.75)}
+      className='cursor-pointer'
+      onClick={() => window.open(live_demo_link, "_blank")} // Redirect to live demo when the card is clicked
+    >
       <Tilt
         tiltMaxAngleX={45}
         tiltMaxAngleY={45}
@@ -51,7 +57,10 @@ const ProjectCard: React.FC<Project> = ({
 
           <div className='absolute inset-0 flex justify-end m-3 card-img_hover'>
             <div
-              onClick={() => window.open(source_code_link, "_blank")}
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent the click from triggering the live demo link
+                window.open(source_code_link, "_blank");
+              }}
               className='black-gradient w-10 h-10 rounded-full flex justify-center items-center cursor-pointer'
             >
               <img

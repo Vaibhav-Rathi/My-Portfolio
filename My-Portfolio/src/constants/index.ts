@@ -198,10 +198,14 @@ import {
   
   const projects = [
     {
-      name: "Car Rent",
+      name: "Imaginify",
       description:
-        "Web-based platform that allows users to search, book, and manage car rentals from various providers, providing a convenient and efficient solution for transportation needs.",
+        "Imaginify is an AI-based tool that restores and edits images, enhancing quality and detail effortlessly.",
       tags: [
+        {
+          name: "Next JS",
+          color: "white-text-gradient",
+        },
         {
           name: "react",
           color: "blue-text-gradient",
@@ -216,7 +220,7 @@ import {
         },
       ],
       image: carrent,
-      source_code_link: "https://github.com/Vaibhav-Rathi/",
+      source_code_link: "https://github.com/Vaibhav-Rathi/Imaginify",
     },
     {
       name: "Job IT",

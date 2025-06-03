@@ -1,6 +1,5 @@
 import React, { useRef, useState, FormEvent, ChangeEvent } from "react";
 import { motion } from "framer-motion";
-import emailjs from "@emailjs/browser";
 
 import { styles } from "../styles";
 import { EarthCanvas } from "./canvas";
@@ -42,52 +41,51 @@ const Contact: React.FC = () => {
   };
 
   // Handle form submission with typed event
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
-
-    
-
-    emailjs
-      .send(
-        import.meta.env.VITE_APP_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID,
-        {
-          from_name: form.name,
-          to_name: "Vaibhav Rathi from " + form.email,
-          from_email: form.email,
-          to_email: "vaibhavrathi88888@gmail.com",
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/send-email`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
           message: form.message,
-        },
-        import.meta.env.VITE_APP_EMAILJS_PUBLIC_KEY
-      )
-      .then(
-        () => {
-          setLoading(false);
-          setMessageCard({
-            visible: true,
-            text: "Thank you. I will get back to you as soon as possible.",
-            type: "success",
-          });
+        }),
+      });
 
-          setForm({
-            name: "",
-            email: "",
-            message: "",
-          });
-        },
-        (error) => {
-          setLoading(false);
-          console.error(error);
+      const data = await response.json();
 
-          setMessageCard({
-            visible: true,
-            text: "Ahh, something went wrong. Please try again.",
-            type: "error",
-          });
-        }
-      );
+      if (response.ok) {
+        setLoading(false);
+        setMessageCard({
+          visible: true,
+          text: "Thank you. I will get back to you as soon as possible.",
+          type: "success",
+        });
+
+        setForm({
+          name: "",
+          email: "",
+          message: "",
+        });
+      } else {
+        throw new Error(data.error || 'Failed to send email');
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error('Error sending email:', error);
+
+      setMessageCard({
+        visible: true,
+        text: "Ahh, something went wrong. Please try again.",
+        type: "error",
+      });
+    }
   };
 
   const closeMessageCard = () => {
@@ -117,6 +115,7 @@ const Contact: React.FC = () => {
               onChange={handleChange}
               placeholder="What's your good name?"
               className='bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium'
+              required
             />
           </label>
           <label className='flex flex-col'>
@@ -128,6 +127,7 @@ const Contact: React.FC = () => {
               onChange={handleChange}
               placeholder="What's your web address?"
               className='bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium'
+              required
             />
           </label>
           <label className='flex flex-col'>
@@ -139,12 +139,14 @@ const Contact: React.FC = () => {
               onChange={handleChange}
               placeholder='What you want to say?'
               className='bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium'
+              required
             />
           </label>
           <div className="flex justify-center">
             <button
               type='submit'
               className='bg-tertiary py-3 px-8 rounded-xl outline-none w-fit text-white font-bold shadow-md shadow-primary'
+              disabled={loading}
             >
               {loading ? "Sending..." : "Send"}
             </button>

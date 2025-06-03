@@ -30,8 +30,10 @@ import carrent from "./carrent.png";
 import jobit from "./jobit.png";
 import tripguide from "./tripguide.png";
 import name from "./name.webp"
+import muzer from "./muzer.png"
 
 export {
+  muzer,
   logo,
   backend,
   creator,

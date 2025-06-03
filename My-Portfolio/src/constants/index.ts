@@ -20,9 +20,9 @@ import {
     tesla,
     shopify,
     carrent,
-    jobit,
     tripguide,
     threejs,
+    muzer
   } from "../assets";
   
   export const navLinks = [
@@ -224,9 +224,9 @@ import {
       live_demo_link: "https://imaginify.vaibhav-projects.com/",
     },
     {
-      name: "Job IT",
+      name: "Muzer",
       description:
-        "Web application that enables users to search for job openings, view estimated salary ranges for positions, and locate available jobs based on their current location.",
+        "Muzer is a collaborative music streaming platform where users can paste YouTube links to queue songs in real-time.",
       tags: [
         {
           name: "react",
@@ -237,13 +237,16 @@ import {
           color: "green-text-gradient",
         },
         {
-          name: "scss",
+          name: "css",
           color: "pink-text-gradient",
-        },
+        },{
+          name:"NextJS",
+          color:"white-text-gradient"
+        }
       ],
-      image: jobit,
-      source_code_link: "https://github.com/Vaibhav-Rathi/",
-      live_demo_link: "https://github.com/Vaibhav-Rathi/",
+      image: muzer,
+      source_code_link: "https://github.com/Vaibhav-Rathi/MusicStream",
+      live_demo_link: "https://muzer.vaibhav-projects.com/",
     },
     {
       name: "Trip Guide",

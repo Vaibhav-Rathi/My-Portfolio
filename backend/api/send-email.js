@@ -1,28 +1,26 @@
-const express = require('express');
+
+// api/send-email.js
 const nodemailer = require('nodemailer');
-const cors = require('cors');
-require('dotenv').config();
 
-const app = express();
-const PORT = process.env.PORT || 5000;
-
-// Middleware
-app.use(cors());
-app.use(express.json());
-
-// Create a transporter using your email service with your env variables
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_SERVER_HOST,
-  port: parseInt(process.env.EMAIL_SERVER_PORT || '587'),
-  secure: false, // true for 465, false for other ports
-  auth: {
-    user: process.env.EMAIL_SERVER_USER,
-    pass: process.env.EMAIL_SERVER_PASSWORD
+export default async function handler(req, res) {
+  // Handle preflight OPTIONS request for CORS
+  if (req.method === 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    return res.status(200).end();
   }
-});
 
-// Email sending endpoint
-app.post('/api/send-email', async (req, res) => {
+  // Only allow POST requests
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
   const { name, email, message } = req.body;
 
   // Validate input
@@ -30,10 +28,21 @@ app.post('/api/send-email', async (req, res) => {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
+  // Create transporter
+  const transporter = nodemailer.createTransporter({
+    host: process.env.EMAIL_SERVER_HOST,
+    port: parseInt(process.env.EMAIL_SERVER_PORT || '587'),
+    secure: false, // true for 465, false for other ports
+    auth: {
+      user: process.env.EMAIL_SERVER_USER,
+      pass: process.env.EMAIL_SERVER_PASSWORD
+    }
+  });
+
   // Email options - Professional notification email for you
   const mailOptions = {
-    from: process.env.EMAIL_FROM, // Using your EMAIL_FROM env variable
-    to: 'vaibhavrathi1000@gmail.com', // Your email where you want to receive messages
+    from: process.env.EMAIL_FROM,
+    to: 'vaibhavrathi1000@gmail.com',
     subject: `Portfolio Contact Form - Message from ${name}`,
     html: `
       <!DOCTYPE html>
@@ -114,14 +123,14 @@ app.post('/api/send-email', async (req, res) => {
       </body>
       </html>
     `,
-    replyTo: email // This allows you to reply directly to the sender
+    replyTo: email
   };
 
   try {
     // Send email
     await transporter.sendMail(mailOptions);
     
-    // Send confirmation email to the user (optional) - Professional thank you email
+    // Send confirmation email to the user
     const confirmationMailOptions = {
       from: process.env.EMAIL_FROM,
       to: email,
@@ -177,7 +186,7 @@ app.post('/api/send-email', async (req, res) => {
                           <tr>
                             <td style="padding: 5px 0;">
                               <strong style="color: #7f8c8d;">Email:</strong>
-                              <a href="mailto:vaibhavrathi88888@gmail.com" style="color: #3498db; text-decoration: none; margin-left: 10px;">vaibhavrathi88888@gmail.com</a>
+                              <a href="mailto:vaibhavrathi1000@gmail.com" style="color: #3498db; text-decoration: none; margin-left: 10px;">vaibhavrathi1000@gmail.com</a>
                             </td>
                           </tr>
                         </table>
@@ -210,7 +219,7 @@ app.post('/api/send-email', async (req, res) => {
                       </p>
                       <p style="margin: 0; color: #7f8c8d; font-size: 14px;">
                         <a href="tel:+917678273889" style="color: #3498db; text-decoration: none;">+91 7678273889</a> | 
-                        <a href="mailto:vaibhavrathi88888@gmail.com" style="color: #3498db; text-decoration: none;">vaibhavrathi88888@gmail.com</a>
+                        <a href="mailto:vaibhavrathi1000@gmail.com" style="color: #3498db; text-decoration: none;">vaibhavrathi1000@gmail.com</a>
                       </p>
                     </td>
                   </tr>
@@ -230,13 +239,4 @@ app.post('/api/send-email', async (req, res) => {
     console.error('Error sending email:', error);
     res.status(500).json({ error: 'Failed to send email' });
   }
-});
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK' });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+}

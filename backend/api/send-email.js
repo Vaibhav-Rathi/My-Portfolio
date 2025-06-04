@@ -38,11 +38,11 @@ export default async function handler(req, res) {
     }
   });
 
-  // Email options - Professional notification email for you
-  const mailOptions = {
+  // Email to the form submitter (confirmation email)
+  const userMailOptions = {
     from: process.env.EMAIL_FROM,
-    to: email,
-    subject: `Portfolio Contact Form - Vaibhav Rathi`,
+    to: email, // Send to the person who filled the form
+    subject: `Thank You for Reaching Out - Vaibhav Rathi`,
     html: `
       <!DOCTYPE html>
         <html>
@@ -107,7 +107,7 @@ export default async function handler(req, res) {
                         <table cellpadding="0" cellspacing="0" border="0" style="margin-top: 15px;">
                         <tr>
                             <td style="padding: 8px 0;">
-                            <a href="mailto:vaibhavrathi1000@gmail.com" style="color: #667eea; text-decoration: none; font-size: 15px;">vaibhavrathi88888@gmail.com</a>
+                            <a href="mailto:vaibhavrathi1000@gmail.com" style="color: #667eea; text-decoration: none; font-size: 15px;">vaibhavrathi1000@gmail.com</a>
                             </td>
                         </tr>
                         <tr>
@@ -121,11 +121,21 @@ export default async function handler(req, res) {
                     <!-- Message Copy -->
                     <div style="background-color: #f5f3ff; padding: 20px; border-radius: 6px; margin-top: 30px;">
                         <h4 style="color: #7f8c8d; font-size: 14px; margin: 0 0 10px 0; text-transform: uppercase;">
-                        Your Message: I'm not just another web dev who copies from Stack Overflow. I build stuff that works, looks clean, and actually makes sense to users. 
-                        React, Next.js, Tailwind — all in my toolbox. I love turning messy ideas into smooth digital experiences. Fast learner, quick debugger, and allergic to bad UI.
-                         If you're after someone who codes like it's art but delivers like it's business — I'm your guy. Let’s build something that matters.
+                        Your Message:
                         </h4>
                         <p style="color: #2c3e50; font-size: 15px; line-height: 1.6; margin: 0; white-space: pre-wrap; font-style: italic;">"${message}"</p>
+                    </div>
+                    
+                    <!-- About Me Section -->
+                    <div style="background-color: #f8f9fa; padding: 25px; border-radius: 6px; margin-top: 30px;">
+                        <h3 style="color: #2c3e50; font-size: 18px; margin: 0 0 15px 0;">
+                        A bit about me:
+                        </h3>
+                        <p style="color: #555; font-size: 15px; line-height: 1.8; margin: 0;">
+                        I'm not just another web dev who copies from Stack Overflow. I build stuff that works, looks clean, and actually makes sense to users. 
+                        React, Next.js, Tailwind — all in my toolbox. I love turning messy ideas into smooth digital experiences. Fast learner, quick debugger, and allergic to bad UI.
+                        If you're after someone who codes like it's art but delivers like it's business — I'm your guy. Let's build something that matters.
+                        </p>
                     </div>
                     
                     <!-- Signature -->
@@ -156,7 +166,7 @@ export default async function handler(req, res) {
                     </div>
                     
                     <p style="margin: 0 0 5px 0; color: #7f8c8d; font-size: 14px;">
-                        © 2024 Vaibhav Rathi. All rights reserved.
+                        © 2025 Vaibhav Rathi. All rights reserved.
                     </p>
                     <p style="margin: 0; color: #95a5a6; font-size: 13px;">
                         This is an automated response from my portfolio website
@@ -172,117 +182,108 @@ export default async function handler(req, res) {
     `
   };
 
+  // Email notification to yourself
+  const notificationMailOptions = {
+    from: process.env.EMAIL_FROM,
+    to: process.env.EMAIL_FROM, // Send to yourself
+    subject: `New Portfolio Contact from ${name}`,
+    html: `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      </head>
+      <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4;">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #f4f4f4;">
+          <tr>
+            <td align="center" style="padding: 40px 0;">
+              <table cellpadding="0" cellspacing="0" border="0" width="600" style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <!-- Header -->
+                <tr>
+                  <td style="background-color: #2c3e50; padding: 30px; border-radius: 8px 8px 0 0;">
+                    <h2 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 600;">
+                      New Contact Form Submission
+                    </h2>
+                  </td>
+                </tr>
+                
+                <!-- Body -->
+                <tr>
+                  <td style="padding: 30px;">
+                    <h3 style="color: #2c3e50; font-size: 18px; margin: 0 0 20px 0;">
+                      Contact Details:
+                    </h3>
+                    
+                    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 6px; margin-bottom: 20px;">
+                      <p style="color: #2c3e50; font-size: 16px; line-height: 1.6; margin: 0 0 10px 0;">
+                        <strong>Name:</strong> ${name}
+                      </p>
+                      <p style="color: #2c3e50; font-size: 16px; line-height: 1.6; margin: 0 0 10px 0;">
+                        <strong>Email:</strong> <a href="mailto:${email}" style="color: #3498db; text-decoration: none;">${email}</a>
+                      </p>
+                      <p style="color: #2c3e50; font-size: 16px; line-height: 1.6; margin: 0;">
+                        <strong>Time:</strong> ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
+                      </p>
+                    </div>
+                    
+                    <h3 style="color: #2c3e50; font-size: 18px; margin: 20px 0;">
+                      Message:
+                    </h3>
+                    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 6px;">
+                      <p style="color: #2c3e50; font-size: 16px; line-height: 1.8; margin: 0; white-space: pre-wrap;">${message}</p>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 20px; background-color: #e8f4f8; border-radius: 6px;">
+                      <p style="color: #2c3e50; font-size: 14px; margin: 0;">
+                        <strong>Quick Actions:</strong><br>
+                        <a href="mailto:${email}" style="color: #3498db; text-decoration: none;">→ Reply to ${name}</a>
+                      </p>
+                    </div>
+                  </td>
+                </tr>
+                
+                <!-- Footer -->
+                <tr>
+                  <td style="background-color: #f8f9fa; padding: 20px; text-align: center; border-radius: 0 0 8px 8px;">
+                    <p style="margin: 0; color: #7f8c8d; font-size: 14px;">
+                      This is an automated notification from your portfolio contact form
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </body>
+      </html>
+    `
+  };
+
   try {
-    // Send email
-    await transporter.sendMail(mailOptions);
+    console.log('Attempting to send emails...');
     
     // Send confirmation email to the user
-    const confirmationMailOptions = {
-      from: process.env.EMAIL_FROM,
-      to: email,
-      subject: 'Thank you for contacting Vaibhav Rathi',
-      html: `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
-        <body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4;">
-          <table cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #f4f4f4;">
-            <tr>
-              <td align="center" style="padding: 40px 0;">
-                <table cellpadding="0" cellspacing="0" border="0" width="600" style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                  <!-- Header -->
-                  <tr>
-                    <td style="background-color: #2c3e50; padding: 40px; border-radius: 8px 8px 0 0; text-align: center;">
-                      <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: 600;">
-                        Thank You!
-                      </h1>
-                    </td>
-                  </tr>
-                  
-                  <!-- Body -->
-                  <tr>
-                    <td style="padding: 40px;">
-                      <p style="color: #2c3e50; font-size: 18px; line-height: 1.6; margin-bottom: 20px;">
-                        Hi <strong>${name}</strong>,
-                      </p>
-                      
-                      <p style="color: #2c3e50; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">
-                        Thank you for reaching out through my portfolio. I've received your message and appreciate you taking the time to connect with me.
-                      </p>
-                      
-                      <p style="color: #2c3e50; font-size: 16px; line-height: 1.6; margin-bottom: 30px;">
-                        I'll review your message and get back to you as soon as possible, typically within 24-48 hours.
-                      </p>
-                      
-                      <!-- Contact Info Box -->
-                      <div style="background-color: #f8f9fa; padding: 25px; border-radius: 6px; margin: 30px 0;">
-                        <h3 style="color: #2c3e50; font-size: 18px; margin: 0 0 15px 0;">
-                          In the meantime, feel free to connect:
-                        </h3>
-                        <table cellpadding="0" cellspacing="0" border="0">
-                          <tr>
-                            <td style="padding: 5px 0;">
-                              <strong style="color: #7f8c8d;">Phone:</strong>
-                              <a href="tel:+917678273889" style="color: #3498db; text-decoration: none; margin-left: 10px;">+91 7678273889</a>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td style="padding: 5px 0;">
-                              <strong style="color: #7f8c8d;">Email:</strong>
-                              <a href="mailto:vaibhavrathi1000@gmail.com" style="color: #3498db; text-decoration: none; margin-left: 10px;">vaibhavrathi1000@gmail.com</a>
-                            </td>
-                          </tr>
-                        </table>
-                      </div>
-                      
-                      <!-- Your Message Copy -->
-                      <div style="background-color: #f8f9fa; padding: 20px; border-radius: 6px; margin-top: 30px;">
-                        <h4 style="color: #7f8c8d; font-size: 14px; margin: 0 0 10px 0; text-transform: uppercase;">
-                          Your Message:
-                        </h4>
-                        <p style="color: #2c3e50; font-size: 15px; line-height: 1.6; margin: 0; white-space: pre-wrap;">${message}</p>
-                      </div>
-                      
-                      <p style="color: #2c3e50; font-size: 16px; line-height: 1.6; margin-top: 30px;">
-                        Looking forward to our conversation!
-                      </p>
-                      
-                      <p style="color: #2c3e50; font-size: 16px; line-height: 1.6; margin-top: 20px;">
-                        Best regards,<br>
-                        <strong style="font-size: 18px;">Vaibhav Rathi</strong>
-                      </p>
-                    </td>
-                  </tr>
-                  
-                  <!-- Footer -->
-                  <tr>
-                    <td style="background-color: #f8f9fa; padding: 30px; text-align: center; border-radius: 0 0 8px 8px;">
-                      <p style="margin: 0 0 10px 0; color: #7f8c8d; font-size: 14px;">
-                        Connect with me:
-                      </p>
-                      <p style="margin: 0; color: #7f8c8d; font-size: 14px;">
-                        <a href="tel:+917678273889" style="color: #3498db; text-decoration: none;">+91 7678273889</a> | 
-                        <a href="mailto:vaibhavrathi1000@gmail.com" style="color: #3498db; text-decoration: none;">vaibhavrathi1000@gmail.com</a>
-                      </p>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </body>
-        </html>
-      `
-    };
+    await transporter.sendMail(userMailOptions);
+    console.log('Confirmation email sent to user:', email);
     
-    await transporter.sendMail(confirmationMailOptions);
+    // Send notification email to yourself
+    await transporter.sendMail(notificationMailOptions);
+    console.log('Notification email sent to:', process.env.EMAIL_FROM);
     
-    res.status(200).json({ success: true, message: 'Email sent successfully' });
+    res.status(200).json({ 
+      success: true, 
+      message: 'Emails sent successfully' 
+    });
   } catch (error) {
     console.error('Error sending email:', error);
-    res.status(500).json({ error: 'Failed to send email', details: error.message });
+    console.error('Error code:', error.code);
+    console.error('Error response:', error.response);
+    
+    res.status(500).json({ 
+      error: 'Failed to send email', 
+      details: error.message,
+      code: error.code 
+    });
   }
 }

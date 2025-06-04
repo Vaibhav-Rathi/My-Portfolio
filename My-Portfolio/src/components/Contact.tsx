@@ -13,6 +13,8 @@ interface FormState {
   message: string;
 }
 
+const API_URL = import.meta.env.VITE_API_URL || 'https://my-portfolio-beige-alpha.vercel.app';
+
 const Contact: React.FC = () => {
   // Use Ref with the proper type for HTMLFormElement
   const formRef = useRef<HTMLFormElement>(null);
@@ -46,7 +48,7 @@ const Contact: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/send-email`, {
+      const response = await fetch(`${API_URL}/api/send-email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +60,7 @@ const Contact: React.FC = () => {
         }),
       });
 
-      
+
       const data = await response.json();
 
       if (response.ok) {

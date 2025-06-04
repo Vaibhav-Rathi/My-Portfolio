@@ -1,3 +1,5 @@
+// /api/health.js
+
 export default async function handler(req, res) {
   // Handle preflight OPTIONS request for CORS
   if (req.method === 'OPTIONS') {

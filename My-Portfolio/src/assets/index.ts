@@ -31,7 +31,7 @@ import jobit from "./jobit.png";
 import tripguide from "./tripguide.png";
 import name from "./name.webp"
 import muzer from "./muzer.png"
-import vicast from "./vicast.png"
+import vicast from "./vicast.PNG"
 
 export {
   vicast,

@@ -20,9 +20,9 @@ import {
     tesla,
     shopify,
     carrent,
-    tripguide,
     threejs,
-    muzer
+    muzer,
+    vicast,
   } from "../assets";
   
   export const navLinks = [
@@ -198,6 +198,32 @@ import {
 
   const projects = [
     {
+      name: "Vicast",
+      description:
+        "A multy participants HD podcast website which encapsulates the local recording functionality, video editing with auto caption, noise removal, sheduling meetings and much more.",
+      tags: [
+        {
+          name: "Next JS",
+          color: "blue-text-gradient",
+        },
+        {
+          name: "nodejs",
+          color: "green-text-gradient",
+        },
+        {
+          name: "React",
+          color: "pink-text-gradient",
+        },
+        {
+          name: "Express",
+          color: "green-text-gradient",
+        },
+      ],
+      image: vicast,
+      source_code_link: "https://github.com/Vaibhav-Rathi/Vicast",
+      live_demo_link: "https://vicast.vaibhav-projects.com/"
+    },
+    {
       name: "Imaginify",
       description:
         "Imaginify is an AI-powered image restoration and editing tool that enhances photo quality, repairs damage, and improves visual details seamlessly.",
@@ -247,29 +273,7 @@ import {
       image: muzer,
       source_code_link: "https://github.com/Vaibhav-Rathi/MusicStream",
       live_demo_link: "https://muzer.vaibhav-projects.com/",
-    },
-    {
-      name: "Trip Guide",
-      description:
-        "A comprehensive travel booking platform that allows users to book flights, hotels, and rental cars, and offers curated recommendations for popular destinations.",
-      tags: [
-        {
-          name: "nextjs",
-          color: "blue-text-gradient",
-        },
-        {
-          name: "nodejs",
-          color: "green-text-gradient",
-        },
-        {
-          name: "scss",
-          color: "pink-text-gradient",
-        },
-      ],
-      image: tripguide,
-      source_code_link: "https://github.com/Vaibhav-Rathi/",
-      live_demo_link: "https://github.com/Vaibhav-Rathi/"
-    },
+    }
   ];
   
 

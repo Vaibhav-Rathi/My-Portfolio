@@ -15,6 +15,7 @@ interface BallCanvasProps {
 }
 
 
+
 const Ball: React.FC<BallProps> = (props) => {
   const [decal] = useTexture([props.imgUrl]);
 

@@ -37,7 +37,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd ~/MY-PORTFOLIO/My-Portfolio
+            cd ~/My-Portfolio/My-Portfolio
             git pull origin main
             npm install
             npm run build

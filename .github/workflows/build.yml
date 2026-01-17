@@ -8,17 +8,22 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js
-        uses: actions/setup-node@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
-      
-      - name: Install Dependencies
+          cache: 'npm'
+          cache-dependency-path: My-Portfolio/package-lock.json
+
+      - name: Install dependencies
         run: npm install
-        working-directory: ./My-Portfolio 
-        
-      - name: Run Build
+        working-directory: ./My-Portfolio
+
+      - name: Run build
         run: npm run build
-        working-directory: ./My-Portfolio 
+        working-directory: ./My-Portfolio

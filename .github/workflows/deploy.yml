@@ -1,4 +1,4 @@
-name: Build and Deploy to Docker Hub
+name: Build and Deploy to EC2
 
 on:
   push:
@@ -6,59 +6,41 @@ on:
       - main
 
 jobs:
-  build-and-push:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Check Out Repo
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Cache Docker layers
-        uses: actions/cache@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
+          node-version: '20'
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./My-Portfolio
 
-      - name: Build and Push Docker image
-        uses: docker/build-push-action@v3
-        with:
-          context: ./My-Portfolio  
-          file: ./My-Portfolio/Dockerfile  
-          push: true
-          tags: |
-            vaibhavvaibhav6/my-portfolio:latest
-            vaibhavvaibhav6/my-portfolio:${{ github.sha }}
-          build-args: |
-            VITE_APP_EMAILJS_SERVICE_ID=${{ secrets.VITE_APP_EMAILJS_SERVICE_ID }}
-            VITE_APP_EMAILJS_TEMPLATE_ID=${{ secrets.VITE_APP_EMAILJS_TEMPLATE_ID }}
-            VITE_APP_EMAILJS_PUBLIC_KEY=${{ secrets.VITE_APP_EMAILJS_PUBLIC_KEY }}
+      - name: Build project
+        run: npm run build
+        working-directory: ./My-Portfolio
+        env:
+          VITE_APP_EMAILJS_SERVICE_ID: ${{ secrets.VITE_APP_EMAILJS_SERVICE_ID }}
+          VITE_APP_EMAILJS_TEMPLATE_ID: ${{ secrets.VITE_APP_EMAILJS_TEMPLATE_ID }}
+          VITE_APP_EMAILJS_PUBLIC_KEY: ${{ secrets.VITE_APP_EMAILJS_PUBLIC_KEY }}
 
-      - name: Verify Pushed Image
-        run: docker pull vaibhavvaibhav6/my-portfolio:latest
-
-      - name: Deploy to EC2  
+      - name: Deploy to EC2 using PM2
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            sudo docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            sudo docker pull vaibhavvaibhav6/my-portfolio:latest
-            sudo docker stop web-app || true
-            sudo docker rm web-app || true
-            sudo docker run -d --name web-app -p 3005:3000 \
-              -e VITE_APP_EMAILJS_SERVICE_ID=${{ secrets.EMAILJS_SERVICE_ID }} \
-              -e VITE_APP_EMAILJS_TEMPLATE_ID=${{ secrets.EMAILJS_TEMPLATE_ID }} \
-              -e VITE_APP_EMAILJS_PUBLIC_KEY=${{ secrets.EMAILJS_PUBLIC_KEY }} \
-              vaibhavvaibhav6/my-portfolio:latest
+            cd ~/MY-PORTFOLIO/My-Portfolio
+            git pull origin main
+            npm install
+            npm run build
+            pm2 stop my-portfolio || true
+            pm2 start npm --name "my-portfolio" -- start
+            pm2 save
